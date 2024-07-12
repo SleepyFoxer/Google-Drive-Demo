@@ -57,8 +57,8 @@ public class DriveClient {
      * 上传多个文件
      *
      * @param drive     云盘
-     * @param backupId  文件目录ID
-     * @param srcFolder 源文件夹
+     * @param backupId  上传到云端的文件目录ID
+     * @param srcFolder 本地待上传源文件夹
      */
     public static void uploadFiles(Drive drive, String backupId, String srcFolder) throws IOException {
         java.io.File parentFile = new java.io.File(srcFolder);
@@ -79,8 +79,8 @@ public class DriveClient {
      * 上传单个文件
      *
      * @param drive    云盘
-     * @param backupId 文件目录ID
-     * @param file     文件
+     * @param backupId 上传到云端的文件目录ID
+     * @param file     本地待上传文件
      */
     public static void uploadFile(Drive drive, String backupId, java.io.File file) throws IOException {
         File fileMetadata = new File();
@@ -100,8 +100,8 @@ public class DriveClient {
      * 下载文件
      *
      * @param drive    云盘
-     * @param backupId 文件目录ID
-     * @param dstPath  文件下载文件夹
+     * @param backupId 下载的云端文件目录ID
+     * @param dstPath  本地文件下载保存的文件夹路径
      */
     public static void downloadFiles(Drive drive, String backupId, String dstPath) throws IOException {
         java.io.File dstFolder = new java.io.File(dstPath);
@@ -127,7 +127,7 @@ public class DriveClient {
      *
      * @param drive     云盘
      * @param file      云文件信息
-     * @param dstFolder 下载文件夹
+     * @param dstFolder 本地文件下载保存的文件夹
      */
     public static void downloadFile(Drive drive, File file, java.io.File dstFolder) throws IOException {
         java.io.File dstFile = new java.io.File(dstFolder, file.getName());
@@ -143,7 +143,7 @@ public class DriveClient {
      * 获取文件数据
      *
      * @param drive    云盘
-     * @param backupId 文件目录ID
+     * @param backupId 云端文件目录ID
      * @return 返回获取的备份数据
      */
     public static List<File> getFiles(Drive drive, String backupId) throws IOException {
@@ -183,7 +183,7 @@ public class DriveClient {
      * 更新文件
      *
      * @param drive  云盘
-     * @param fileId 文件ID
+     * @param fileId 云端文件ID
      * @param file   需要修改的文件属性
      * @return 更新之后的文件
      */
@@ -195,7 +195,7 @@ public class DriveClient {
      * 删除文件
      *
      * @param drive  云盘
-     * @param fileId 文件ID
+     * @param fileId 云端文件ID
      */
     public static void deleteFile(Drive drive, String fileId) throws IOException {
         drive.files().delete(fileId).execute();
@@ -219,13 +219,14 @@ public class DriveClient {
      * 监听文件夹变化
      *
      * @param drive    云盘
-     * @param backupId 文件目录ID
+     * @param backupId 云端文件目录ID
+     * @param callbackUrl 监听变化通知地址
      */
-    public static void watch(Drive drive, String backupId) throws IOException {
+    public static void watch(Drive drive, String backupId,String callbackUrl) throws IOException {
         Channel channel = new Channel();
         channel.setId("test123"); // 唯一ID
         channel.setType("web_hook");
-        channel.setAddress("https://www.baidu.com"); // 监听变化通知地址
+        channel.setAddress(callbackUrl);
 
         // 启动对文件夹变化的监视
         Channel resultChannel = drive.files().watch(backupId, channel).execute();
