@@ -180,11 +180,11 @@ public class DriveClient {
     }
 
     /**
-     * 更新文件爱
+     * 更新文件
      *
      * @param drive  云盘
      * @param fileId 文件ID
-     * @param file   文件属性配置
+     * @param file   需要修改的文件属性
      * @return 更新之后的文件
      */
     public static File updateFile(Drive drive, String fileId, File file) throws IOException {
